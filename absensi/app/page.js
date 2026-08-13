@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createBrowserClient } from "@supabase/ssr"; // ini versi barunya
 import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
@@ -10,7 +10,12 @@ export default function AuthPage() {
   const [nama, setNama] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const supabase = createClientComponentClient();
+  
+  // Cara bikin client baru
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
   const router = useRouter();
 
   const handleAuth = async (e) => {
@@ -87,7 +92,7 @@ export default function AuthPage() {
                 value={nama}
                 onChange={(e) => setNama(e.target.value)}
                 required
-                className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Nama Lengkap"
               />
             </div>
@@ -100,7 +105,7 @@ export default function AuthPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="email@domain.com"
             />
           </div>
